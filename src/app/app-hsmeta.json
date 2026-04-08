@@ -17,6 +17,13 @@
       "optionalScopes": [],
       "conditionallyRequiredScopes": []
     },
+    "permittedUrls": {
+      "fetch": [
+        "https://api.botbonnie.com"
+      ],
+      "iframe": [],
+      "img": []
+    },
     "support": {
       "supportEmail": "",
       "documentationUrl": "",

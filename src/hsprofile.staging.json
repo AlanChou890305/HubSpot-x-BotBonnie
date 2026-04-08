@@ -1,7 +1,8 @@
 {
+  "accountId": 40046267,
   "variables": {
     "appName": "BotBonnie Integration (Staging)",
-    "sendLineSingleMessageFunctionUrl": "REPLACE_AFTER_FIRST_DEPLOY",
-    "sendLineModuleMessageFunctionUrl": "REPLACE_AFTER_FIRST_DEPLOY"
+    "sendLineSingleMessageFunctionUrl": "https://api.hubapi.com/integrations/v1/36161153/signed-api/api/send-line-single-message",
+    "sendLineModuleMessageFunctionUrl": "https://api.hubapi.com/integrations/v1/36161153/signed-api/api/send-line-module-message"
   }
 }

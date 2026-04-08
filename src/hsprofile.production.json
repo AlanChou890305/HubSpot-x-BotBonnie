@@ -1,4 +1,5 @@
 {
+  "accountId": 40046267,
   "variables": {
     "appName": "BotBonnie Integration",
     "sendLineSingleMessageFunctionUrl": "REPLACE_AFTER_FIRST_DEPLOY",

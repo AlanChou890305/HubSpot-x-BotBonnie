@@ -3,7 +3,6 @@
   "type": "workflow-action",
   "config": {
     "actionUrl": "${sendLineModuleMessageFunctionUrl}",
-    "published": true,
     "supportedClients": [
       { "client": "WORKFLOWS" }
     ],
@@ -15,7 +14,7 @@
           "type": "string",
           "fieldType": "text"
         },
-        "supportedValueTypes": ["STATIC_VALUE", "OBJECT_PROPERTY"],
+        "supportedValueTypes": ["OBJECT_PROPERTY"],
         "isRequired": true
       },
       {

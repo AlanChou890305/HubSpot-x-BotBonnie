@@ -1,8 +1,8 @@
 defaultPortal: staging
 portals:
   - name: staging
-    portalId: REPLACE_WITH_STAGING_PORTAL_ID
+    portalId: 40046267
     authType: personalaccesskey
   - name: production
-    portalId: REPLACE_WITH_PRODUCTION_PORTAL_ID
+    portalId: 40046267
     authType: personalaccesskey
