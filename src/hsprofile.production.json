@@ -1,0 +1,7 @@
+{
+  "variables": {
+    "appName": "BotBonnie Integration",
+    "sendLineSingleMessageFunctionUrl": "REPLACE_AFTER_FIRST_DEPLOY",
+    "sendLineModuleMessageFunctionUrl": "REPLACE_AFTER_FIRST_DEPLOY"
+  }
+}

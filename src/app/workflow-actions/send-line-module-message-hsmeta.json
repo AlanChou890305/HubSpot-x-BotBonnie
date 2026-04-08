@@ -1,0 +1,47 @@
+{
+  "uid": "send_line_module_message",
+  "type": "workflow-action",
+  "config": {
+    "actionUrl": "${sendLineModuleMessageFunctionUrl}",
+    "published": true,
+    "supportedClients": [
+      { "client": "WORKFLOWS" }
+    ],
+    "objectTypes": ["CONTACT"],
+    "inputFields": [
+      {
+        "typeDefinition": {
+          "name": "lineUserId",
+          "type": "string",
+          "fieldType": "text"
+        },
+        "supportedValueTypes": ["STATIC_VALUE", "OBJECT_PROPERTY"],
+        "isRequired": true
+      },
+      {
+        "typeDefinition": {
+          "name": "moduleId",
+          "type": "string",
+          "fieldType": "text"
+        },
+        "supportedValueTypes": ["STATIC_VALUE"],
+        "isRequired": true
+      }
+    ],
+    "labels": {
+      "en": {
+        "actionName": "Send LINE Module Message",
+        "actionDescription": "Send a BotBonnie module template to a LINE contact",
+        "actionCardContent": "Send LINE module: {{moduleId}}",
+        "inputFieldLabels": {
+          "lineUserId": "LINE User ID",
+          "moduleId": "BotBonnie Module ID"
+        },
+        "inputFieldDescriptions": {
+          "lineUserId": "The contact's LINE User ID (botbonnie_line_user_id property)",
+          "moduleId": "The BotBonnie module/template ID to send"
+        }
+      }
+    }
+  }
+}

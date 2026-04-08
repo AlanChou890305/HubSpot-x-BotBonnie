@@ -1,0 +1,13 @@
+{
+  "name": "hubspot-x-botbonnie",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "sync-service"
+  ],
+  "scripts": {
+    "sync": "node sync-service/src/index.js",
+    "setup:properties": "node sync-service/scripts/createProperties.js",
+    "setup:event": "node sync-service/scripts/createCustomEvent.js"
+  }
+}

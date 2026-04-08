@@ -1,0 +1,27 @@
+{
+  "uid": "botbonnie_app",
+  "type": "app",
+  "config": {
+    "name": "${appName}",
+    "description": "BotBonnie LINE messaging integration for HubSpot Workflows",
+    "distribution": "private",
+    "auth": {
+      "type": "static",
+      "requiredScopes": [
+        "oauth",
+        "crm.objects.contacts.read",
+        "crm.objects.contacts.write",
+        "timeline",
+        "automation"
+      ],
+      "optionalScopes": [],
+      "conditionallyRequiredScopes": []
+    },
+    "support": {
+      "supportEmail": "",
+      "documentationUrl": "",
+      "supportUrl": "",
+      "supportPhone": ""
+    }
+  }
+}

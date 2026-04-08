@@ -1,0 +1,73 @@
+{
+  "uid": "send_line_single_message",
+  "type": "workflow-action",
+  "config": {
+    "actionUrl": "${sendLineSingleMessageFunctionUrl}",
+    "published": true,
+    "supportedClients": [
+      { "client": "WORKFLOWS" }
+    ],
+    "objectTypes": ["CONTACT"],
+    "inputFields": [
+      {
+        "typeDefinition": {
+          "name": "lineUserId",
+          "type": "string",
+          "fieldType": "text"
+        },
+        "supportedValueTypes": ["STATIC_VALUE", "OBJECT_PROPERTY"],
+        "isRequired": true
+      },
+      {
+        "typeDefinition": {
+          "name": "messageType",
+          "type": "enumeration",
+          "fieldType": "select",
+          "options": [
+            { "value": "text", "label": "Text" },
+            { "value": "image", "label": "Image" }
+          ]
+        },
+        "supportedValueTypes": ["STATIC_VALUE"],
+        "isRequired": true
+      },
+      {
+        "typeDefinition": {
+          "name": "messageText",
+          "type": "string",
+          "fieldType": "textarea"
+        },
+        "supportedValueTypes": ["STATIC_VALUE", "OBJECT_PROPERTY"],
+        "isRequired": false
+      },
+      {
+        "typeDefinition": {
+          "name": "imageUrl",
+          "type": "string",
+          "fieldType": "text"
+        },
+        "supportedValueTypes": ["STATIC_VALUE", "OBJECT_PROPERTY"],
+        "isRequired": false
+      }
+    ],
+    "labels": {
+      "en": {
+        "actionName": "Send LINE Single Message",
+        "actionDescription": "Send a single LINE message to a BotBonnie contact",
+        "actionCardContent": "Send LINE {{messageType}} message",
+        "inputFieldLabels": {
+          "lineUserId": "LINE User ID",
+          "messageType": "Message Type",
+          "messageText": "Message Text",
+          "imageUrl": "Image URL"
+        },
+        "inputFieldDescriptions": {
+          "lineUserId": "The contact's LINE User ID (botbonnie_line_user_id property)",
+          "messageType": "Type of LINE message to send",
+          "messageText": "Message text content (for text type)",
+          "imageUrl": "Image URL (for image type)"
+        }
+      }
+    }
+  }
+}
