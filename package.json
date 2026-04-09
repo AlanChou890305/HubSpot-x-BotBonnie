@@ -5,6 +5,10 @@
   "workspaces": [
     "sync-service"
   ],
+  "dependencies": {
+    "@hubspot/api-client": "^13.5.0",
+    "axios": "^1.6.0"
+  },
   "scripts": {
     "sync": "node sync-service/src/index.js",
     "setup:properties": "node sync-service/scripts/createProperties.js",

@@ -2,9 +2,9 @@
   "uid": "send_line_module_message_fn",
   "type": "app-function",
   "config": {
-    "entrypoint": "/app/functions/sendLineModuleMessage.js",
+    "entrypoint": "app/functions/sendLineModuleMessage.js",
     "endpoint": {
-      "path": "/api/send-line-module-message",
+      "path": "send-line-module-message",
       "methods": ["POST"]
     },
     "secretKeys": ["BOTBONNIE_API_TOKEN", "BOTBONNIE_PAGE_ID", "HS_CUSTOM_EVENT_NAME"]
