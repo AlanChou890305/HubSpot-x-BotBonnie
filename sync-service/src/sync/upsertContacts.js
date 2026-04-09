@@ -1,34 +1,41 @@
 const { getHubSpotClient } = require('../lib/hubspotClient');
 const { mapToHubSpotProperties } = require('./mapProperties');
 
-const BATCH_SIZE = 100; // HubSpot batch API limit
+const BATCH_SIZE = 100;
 
 /**
  * Upsert an array of BotBonnie users into HubSpot contacts.
- * Uses botbonnie_line_user_id as the unique identifier (idProperty).
+ * - Users with email: upsert by email (patches existing contacts, adds LINE user ID)
+ * - Users without email: upsert by botbonnie_line_user_id
  */
 async function upsertContacts(users) {
   if (!users || users.length === 0) return;
 
   const client = getHubSpotClient();
+
+  const withEmail = users.filter(u => u.userId && u.email);
+  const withoutEmail = users.filter(u => u.userId && !u.email);
+
+  await batchUpsert(client, withEmail, 'email');
+  await batchUpsert(client, withoutEmail, 'botbonnie_line_user_id');
+}
+
+async function batchUpsert(client, users, idProperty) {
+  if (users.length === 0) return;
+
   const chunks = chunkArray(users, BATCH_SIZE);
 
   for (const chunk of chunks) {
-    const inputs = chunk
-      .filter(user => user.rawId) // skip users without a LINE User ID
-      .map(user => ({
-        idProperty: 'botbonnie_line_user_id',
-        id: user.rawId,
-        properties: mapToHubSpotProperties(user)
-      }));
-
-    if (inputs.length === 0) continue;
+    const inputs = chunk.map(user => ({
+      idProperty,
+      id: idProperty === 'email' ? user.email : user.userId,
+      properties: mapToHubSpotProperties(user)
+    }));
 
     try {
       await client.crm.contacts.batchApi.upsert({ inputs });
     } catch (err) {
-      console.error('[upsertContacts] Batch upsert error:', err.message);
-      // Log failed inputs for debugging
+      console.error(`[upsertContacts] Batch upsert error (idProperty=${idProperty}):`, err.message);
       if (err.body) console.error('[upsertContacts] Details:', JSON.stringify(err.body));
     }
   }

@@ -7,7 +7,7 @@ function mapToHubSpotProperties(user) {
   const props = {};
 
   // Static field mapping
-  if (user.rawId)         props['botbonnie_line_user_id']  = user.rawId;
+  if (user.userId)         props['botbonnie_line_user_id']  = user.userId;
   if (user.name)          props['botbonnie_display_name']  = user.name;
   if (user.pic)           props['botbonnie_profile_pic']   = user.pic;
   if (user.created)       props['botbonnie_created_at']    = String(user.created);
