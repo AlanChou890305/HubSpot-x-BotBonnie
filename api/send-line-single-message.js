@@ -11,15 +11,19 @@ const handler = async (req, res) => {
   const body = await verifyAndParse(req, res);
   if (!body) return;
 
-  if (!body.object || !body.inputFields) {
+  if (!body.inputFields) {
     return res.status(400).json({ error: 'Missing required body fields' });
   }
 
-  const { object, inputFields } = body;
+  const { inputFields } = body;
   const { lineUserId, messageText } = inputFields;
 
   if (!lineUserId) {
     return res.status(400).json({ error: 'Missing required field: lineUserId' });
+  }
+
+  if (!messageText) {
+    return res.status(400).json({ error: 'Missing required field: messageText' });
   }
 
   try {
@@ -39,31 +43,6 @@ const handler = async (req, res) => {
   } catch (err) {
     console.error('[sendLineTextMessage] BotBonnie error:', err.response?.data || err.message);
     return res.status(500).json({ error: 'Failed to send LINE message' });
-  }
-
-  try {
-    await axios.post(
-      'https://api.hubapi.com/events/v3/send',
-      {
-        eventName: process.env.HS_CUSTOM_EVENT_NAME,
-        objectId: String(object.objectId ?? ''),
-        properties: {
-          line_user_id: lineUserId,
-          message_type: 'text',
-          message_text: messageText || ''
-        },
-        occurredAt: new Date().toISOString()
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.PRIVATE_APP_ACCESS_TOKEN}`,
-          'Content-Type': 'application/json'
-        },
-        timeout: 10000
-      }
-    );
-  } catch (err) {
-    console.error('[sendLineTextMessage] HubSpot event error:', err.response?.data || err.message);
   }
 
   return res.status(200).json({ outputFields: {} });

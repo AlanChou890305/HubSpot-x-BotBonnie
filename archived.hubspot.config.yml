@@ -1,8 +1,0 @@
-defaultPortal: staging
-portals:
-  - name: staging
-    portalId: 40046267
-    authType: personalaccesskey
-  - name: production
-    portalId: 40046267
-    authType: personalaccesskey
