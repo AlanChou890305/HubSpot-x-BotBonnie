@@ -2,9 +2,13 @@ const axios = require('axios');
 
 const client = axios.create({
   baseURL: 'https://api.botbonnie.com/v2',
-  headers: {
-    Authorization: `Bearer ${process.env.BOTBONNIE_API_TOKEN}`
-  }
+  timeout: 15000
+});
+
+// Read token at request time so token rotations take effect without a restart
+client.interceptors.request.use(config => {
+  config.headers['Authorization'] = `Bearer ${process.env.BOTBONNIE_API_TOKEN}`;
+  return config;
 });
 
 /**

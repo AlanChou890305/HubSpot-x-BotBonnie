@@ -27,9 +27,14 @@ function mapToHubSpotProperties(user) {
 
   // Dynamic custom parameters: { memberId: "VIP" } → botbonnie_param_memberid
   if (user.parameter && typeof user.parameter === 'object') {
+    const seen = new Set();
     for (const [key, value] of Object.entries(user.parameter)) {
       // Sanitize: lowercase, replace non-alphanumeric with underscore
       const sanitizedKey = key.toLowerCase().replace(/[^a-z0-9]/g, '_');
+      if (seen.has(sanitizedKey)) {
+        console.warn(`[mapProperties] Param key collision: "${key}" → "botbonnie_param_${sanitizedKey}" already set`);
+      }
+      seen.add(sanitizedKey);
       props[`botbonnie_param_${sanitizedKey}`] = String(value);
     }
   }

@@ -4,6 +4,12 @@ const { verifyAndParse } = require('./_verify');
 
 const BOTBONNIE_BASE_URL = 'https://api.botbonnie.com/v2';
 
+let _hsClient = null;
+function getHsClient() {
+  if (!_hsClient) _hsClient = new Client({ accessToken: process.env.PRIVATE_APP_ACCESS_TOKEN });
+  return _hsClient;
+}
+
 const handler = async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -12,33 +18,40 @@ const handler = async (req, res) => {
   const body = await verifyAndParse(req, res);
   if (!body) return; // verifyAndParse already wrote the error response
 
-  if (!body.inputFields) {
+  if (!body.object || !body.inputFields) {
     return res.status(400).json({ error: 'Missing required body fields' });
   }
 
   const { object, inputFields } = body;
   const { lineUserId, moduleId } = inputFields;
 
+  if (!lineUserId || !moduleId) {
+    return res.status(400).json({ error: 'Missing required fields: lineUserId, moduleId' });
+  }
+
   try {
     await axios.post(
       `${BOTBONNIE_BASE_URL}/message/push`,
       {
         pageId: process.env.BOTBONNIE_PAGE_ID,
-        platform: 1,
+        platform: 1, // 1 = LINE (BotBonnie platform constant)
         userId: lineUserId,
         moduleId
       },
-      { headers: { Authorization: `Bearer ${process.env.BOTBONNIE_API_TOKEN}` } }
+      {
+        headers: { Authorization: `Bearer ${process.env.BOTBONNIE_API_TOKEN}` },
+        timeout: 10000
+      }
     );
   } catch (err) {
     console.error('[sendLineModuleMessage] BotBonnie error:', err.response?.data || err.message);
+    return res.status(500).json({ error: 'Failed to send LINE message' });
   }
 
   try {
-    const hsClient = new Client({ accessToken: process.env.PRIVATE_APP_ACCESS_TOKEN });
-    await hsClient.events.send.basicApi.sendEvent({
+    await getHsClient().events.send.basicApi.sendEvent({
       eventName: process.env.HS_CUSTOM_EVENT_NAME,
-      objectId: String(object.objectId),
+      objectId: String(object.objectId ?? ''),
       properties: {
         line_user_id: lineUserId,
         message_type: 'module',

@@ -11,8 +11,15 @@ async function runSync() {
 
   do {
     page++;
-    const { users, next } = await listContacts({ next: cursor });
+    let result;
+    try {
+      result = await listContacts({ next: cursor });
+    } catch (err) {
+      console.error(`[pollBotBonnie] Failed to fetch page ${page}:`, err.message);
+      break;
+    }
 
+    const { users, next } = result;
     if (!users || users.length === 0) break;
 
     await upsertContacts(users);

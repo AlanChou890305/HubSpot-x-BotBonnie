@@ -15,6 +15,10 @@ async function upsertContacts(users) {
 
   const withEmail = users.filter(u => u.userId && u.email);
   const withoutEmail = users.filter(u => u.userId && !u.email);
+  const dropped = users.filter(u => !u.userId);
+  if (dropped.length > 0) {
+    console.warn(`[upsertContacts] Skipping ${dropped.length} users with no userId`);
+  }
 
   await batchUpsert(client, withEmail, 'email');
   await batchUpsert(client, withoutEmail, 'botbonnie_line_user_id');
