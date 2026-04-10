@@ -1,14 +1,7 @@
 const axios = require('axios');
-const { Client } = require('@hubspot/api-client');
 const { verifyAndParse } = require('./_verify');
 
 const BOTBONNIE_BASE_URL = 'https://api.botbonnie.com/v2';
-
-let _hsClient = null;
-function getHsClient() {
-  if (!_hsClient) _hsClient = new Client({ accessToken: process.env.PRIVATE_APP_ACCESS_TOKEN });
-  return _hsClient;
-}
 
 const handler = async (req, res) => {
   if (req.method !== 'POST') {
@@ -49,18 +42,28 @@ const handler = async (req, res) => {
   }
 
   try {
-    await getHsClient().events.send.basicApi.sendEvent({
-      eventName: process.env.HS_CUSTOM_EVENT_NAME,
-      objectId: String(object.objectId ?? ''),
-      properties: {
-        line_user_id: lineUserId,
-        message_type: 'module',
-        message_text: moduleId
+    await axios.post(
+      'https://api.hubapi.com/events/v3/send',
+      {
+        eventName: process.env.HS_CUSTOM_EVENT_NAME,
+        objectId: String(object.objectId ?? ''),
+        properties: {
+          line_user_id: lineUserId,
+          message_type: 'module',
+          message_text: moduleId
+        },
+        occurredAt: new Date().toISOString()
       },
-      occurredAt: new Date().toISOString()
-    });
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.PRIVATE_APP_ACCESS_TOKEN}`,
+          'Content-Type': 'application/json'
+        },
+        timeout: 10000
+      }
+    );
   } catch (err) {
-    console.error('[sendLineModuleMessage] HubSpot event error:', err.message);
+    console.error('[sendLineModuleMessage] HubSpot event error:', err.response?.data || err.message);
   }
 
   return res.status(200).json({ outputFields: {} });
