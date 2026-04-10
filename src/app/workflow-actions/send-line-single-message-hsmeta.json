@@ -19,31 +19,9 @@
       },
       {
         "typeDefinition": {
-          "name": "messageType",
-          "type": "enumeration",
-          "fieldType": "select",
-          "options": [
-            { "value": "text", "label": "Text" },
-            { "value": "image", "label": "Image" }
-          ]
-        },
-        "supportedValueTypes": ["STATIC_VALUE"],
-        "isRequired": true
-      },
-      {
-        "typeDefinition": {
           "name": "messageText",
           "type": "string",
           "fieldType": "textarea"
-        },
-        "supportedValueTypes": ["STATIC_VALUE"],
-        "isRequired": false
-      },
-      {
-        "typeDefinition": {
-          "name": "imageUrl",
-          "type": "string",
-          "fieldType": "text"
         },
         "supportedValueTypes": ["STATIC_VALUE"],
         "isRequired": false
@@ -51,20 +29,16 @@
     ],
     "labels": {
       "en": {
-        "actionName": "Send LINE Single Message",
-        "actionDescription": "Send a single LINE message to a BotBonnie contact",
-        "actionCardContent": "Send LINE {{messageType}} message",
+        "actionName": "Send LINE Text Message",
+        "actionDescription": "Send a text message to a BotBonnie LINE contact",
+        "actionCardContent": "Send LINE text: {{messageText}}",
         "inputFieldLabels": {
           "lineUserId": "LINE User ID",
-          "messageType": "Message Type",
-          "messageText": "Message Text",
-          "imageUrl": "Image URL"
+          "messageText": "Message Text"
         },
         "inputFieldDescriptions": {
           "lineUserId": "The contact's LINE User ID (botbonnie_line_user_id property)",
-          "messageType": "Type of LINE message to send",
-          "messageText": "Message text content (for text type)",
-          "imageUrl": "Image URL (for image type)"
+          "messageText": "Text content to send via LINE"
         }
       }
     }

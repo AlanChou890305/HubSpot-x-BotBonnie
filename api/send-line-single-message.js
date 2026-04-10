@@ -10,23 +10,14 @@ const handler = async (req, res) => {
   }
 
   const body = await verifyAndParse(req, res);
-  if (!body) return; // verifyAndParse already wrote the error response
+  if (!body) return;
 
   if (!body.inputFields) {
     return res.status(400).json({ error: 'Missing required body fields' });
   }
 
   const { object, inputFields } = body;
-  const { lineUserId, messageType, messageText, imageUrl } = inputFields;
-
-  let message;
-  if (messageType === 'text') {
-    message = { type: 'text', text: messageText };
-  } else if (messageType === 'image') {
-    message = { type: 'image', imageUrl };
-  } else {
-    message = { type: messageType, text: messageText };
-  }
+  const { lineUserId, messageText } = inputFields;
 
   try {
     await axios.post(
@@ -35,12 +26,12 @@ const handler = async (req, res) => {
         pageId: process.env.BOTBONNIE_PAGE_ID,
         platform: 1,
         userId: lineUserId,
-        message
+        message: { type: 'text', text: messageText }
       },
       { headers: { Authorization: `Bearer ${process.env.BOTBONNIE_API_TOKEN}` } }
     );
   } catch (err) {
-    console.error('[sendLineSingleMessage] BotBonnie error:', err.response?.data || err.message);
+    console.error('[sendLineTextMessage] BotBonnie error:', err.response?.data || err.message);
   }
 
   try {
@@ -50,13 +41,13 @@ const handler = async (req, res) => {
       objectId: String(object.objectId),
       properties: {
         line_user_id: lineUserId,
-        message_type: messageType,
-        message_text: messageText || ''
+        message_type: 'text',
+        message_text: messageText
       },
       occurredAt: new Date().toISOString()
     });
   } catch (err) {
-    console.error('[sendLineSingleMessage] HubSpot event error:', err.message);
+    console.error('[sendLineTextMessage] HubSpot event error:', err.message);
   }
 
   return res.status(200).json({ outputFields: {} });
