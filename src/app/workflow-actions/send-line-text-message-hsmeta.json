@@ -1,8 +1,8 @@
 {
-  "uid": "send_line_single_message",
+  "uid": "bb_send_text_message",
   "type": "workflow-action",
   "config": {
-    "actionUrl": "${sendLineSingleMessageFunctionUrl}",
+    "actionUrl": "${sendLineTextMessageV2FunctionUrl}",
     "supportedClients": [
       { "client": "WORKFLOWS" }
     ],
@@ -21,10 +21,10 @@
         "typeDefinition": {
           "name": "messageText",
           "type": "string",
-          "fieldType": "textarea"
+          "fieldType": "text"
         },
         "supportedValueTypes": ["STATIC_VALUE"],
-        "isRequired": false
+        "isRequired": true
       }
     ],
     "labels": {
