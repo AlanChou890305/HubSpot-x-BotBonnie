@@ -2,7 +2,7 @@
   "uid": "bb_send_text_message",
   "type": "workflow-action",
   "config": {
-    "actionUrl": "${sendLineTextMessageV2FunctionUrl}",
+    "actionUrl": "${sendLineSingleMessageFunctionUrl}",
     "supportedClients": [
       { "client": "WORKFLOWS" }
     ],
