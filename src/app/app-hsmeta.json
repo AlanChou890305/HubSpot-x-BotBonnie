@@ -12,7 +12,8 @@
         "crm.objects.contacts.read",
         "crm.objects.contacts.write",
         "timeline",
-        "automation"
+        "automation",
+        "behavioral_events.event_definitions.read_write"
       ],
       "optionalScopes": [],
       "conditionallyRequiredScopes": []
