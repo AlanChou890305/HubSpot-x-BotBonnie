@@ -49,6 +49,18 @@
 - `lineUserId`：BotBonnie LINE User ID
 - `moduleId`：BotBonnie Module ID
 
+**Custom Event 記錄：**
+
+每次成功發送訊息後，自動向 HubSpot 記錄一筆 Custom Event（`LINE Message Sent`），顯示在 Contact Timeline。事件包含以下屬性：
+
+| 屬性 | 說明 |
+|------|------|
+| `line_user_id` | LINE User ID |
+| `message_type` | `text` 或 `module` |
+| `message_text` | 訊息內容（文字）或 Module ID |
+
+事件可作為 Workflow 觸發條件與 Reporting 依據。需在 Vercel 設定 `HS_CUSTOM_EVENT_NAME`（格式：`pe{accountId}_line_message_sent`）。
+
 ### 2. 聯絡人同步（BotBonnie → HubSpot）
 
 每天 UTC 02:00（台灣時間 10:00）由 Vercel Cron 自動執行。分頁拉取所有 BotBonnie LINE 聯絡人，批次 upsert 至 HubSpot。
@@ -82,6 +94,7 @@
 | `BOTBONNIE_PAGE_ID` | BotBonnie Page ID | 是 |
 | `HUBSPOT_CLIENT_SECRET` | HubSpot Private App Client Secret（用於 webhook 簽名驗證） | 是 |
 | `PRIVATE_APP_ACCESS_TOKEN` | HubSpot Private App Access Token（用於 API 呼叫） | 是 |
+| `HS_CUSTOM_EVENT_NAME` | HubSpot Custom Event 名稱（格式：`pe{accountId}_line_message_sent`） | 是 |
 | `CRON_SECRET` | Vercel Cron 認證 token | 建議設定 |
 
 ```bash
@@ -89,8 +102,14 @@ vercel env add BOTBONNIE_API_TOKEN
 vercel env add BOTBONNIE_PAGE_ID
 vercel env add HUBSPOT_CLIENT_SECRET
 vercel env add PRIVATE_APP_ACCESS_TOKEN
+vercel env add HS_CUSTOM_EVENT_NAME
 vercel env add CRON_SECRET
 ```
+
+> **注意：** 設定 `HS_CUSTOM_EVENT_NAME` 時請使用 `printf` 而非 `echo` 避免 trailing newline：
+> ```bash
+> printf 'pe245981171_line_message_sent' | vercel env add HS_CUSTOM_EVENT_NAME production
+> ```
 
 ## 部署
 

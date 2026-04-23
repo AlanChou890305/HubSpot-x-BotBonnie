@@ -45,11 +45,13 @@ const handler = async (req, res) => {
     return res.status(500).json({ error: 'Failed to send LINE message' });
   }
 
+  console.log('[sendLineTextMessage] object:', JSON.stringify(object));
+
   try {
     await axios.post(
       'https://api.hubapi.com/events/v3/send',
       {
-        eventName: process.env.HS_CUSTOM_EVENT_NAME,
+        eventName: process.env.HS_CUSTOM_EVENT_NAME?.trim(),
         objectId: String(object.objectId ?? ''),
         properties: {
           line_user_id: lineUserId,

@@ -11,9 +11,12 @@
         "oauth",
         "crm.objects.contacts.read",
         "crm.objects.contacts.write",
+        "crm.schemas.contacts.read",
+        "crm.schemas.contacts.write",
         "timeline",
         "automation",
-        "behavioral_events.event_definitions.read_write"
+        "behavioral_events.event_definitions.read_write",
+        "analytics.behavioral_events.send"
       ],
       "optionalScopes": [],
       "conditionallyRequiredScopes": []

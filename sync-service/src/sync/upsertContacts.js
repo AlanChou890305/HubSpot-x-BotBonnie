@@ -5,8 +5,8 @@ const BATCH_SIZE = 100;
 
 /**
  * Upsert an array of BotBonnie users into HubSpot contacts.
- * - Users with email: upsert by email (patches existing contacts, adds LINE user ID)
- * - Users without email: upsert by botbonnie_line_user_id
+ * - Users with email: batch upsert by email
+ * - Users without email: search by botbonnie_line_user_id, then update or create individually
  */
 async function upsertContacts(users) {
   if (!users || users.length === 0) return;
@@ -21,7 +21,7 @@ async function upsertContacts(users) {
   }
 
   await batchUpsert(client, withEmail, 'email');
-  await batchUpsert(client, withoutEmail, 'botbonnie_line_user_id');
+  await searchAndUpsert(client, withoutEmail);
 }
 
 async function batchUpsert(client, users, idProperty) {
@@ -41,6 +41,38 @@ async function batchUpsert(client, users, idProperty) {
     } catch (err) {
       console.error(`[upsertContacts] Batch upsert error (idProperty=${idProperty}):`, err.message);
       if (err.body) console.error('[upsertContacts] Details:', JSON.stringify(err.body));
+    }
+  }
+}
+
+// For contacts without email: search by LINE user ID, update if found, create if not
+async function searchAndUpsert(client, users) {
+  if (users.length === 0) return;
+
+  for (const user of users) {
+    try {
+      const searchResult = await client.crm.contacts.searchApi.doSearch({
+        filterGroups: [{
+          filters: [{
+            propertyName: 'botbonnie_line_user_id',
+            operator: 'EQ',
+            value: user.userId
+          }]
+        }],
+        properties: ['botbonnie_line_user_id'],
+        limit: 1
+      });
+
+      const properties = mapToHubSpotProperties(user);
+
+      if (searchResult.results.length > 0) {
+        const contactId = searchResult.results[0].id;
+        await client.crm.contacts.basicApi.update(contactId, { properties });
+      } else {
+        await client.crm.contacts.basicApi.create({ properties });
+      }
+    } catch (err) {
+      console.error(`[upsertContacts] Search+upsert error for ${user.userId}:`, err.message);
     }
   }
 }

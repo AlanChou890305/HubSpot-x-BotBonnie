@@ -1,8 +1,0 @@
-{
-  "accountId": 39982897,
-  "variables": {
-    "appName": "BotBonnie Integration (Staging)",
-    "sendLineSingleMessageFunctionUrl": "https://hubspot-botbonnie.vercel.app/api/send-line-text-message",
-    "sendLineModuleMessageFunctionUrl": "https://hubspot-botbonnie.vercel.app/api/send-line-module-message"
-  }
-}
