@@ -1,0 +1,24 @@
+name: BotBonnie → HubSpot Sync
+
+on:
+  schedule:
+    - cron: '0 18 * * *'  # 每天 UTC 18:00 = 台灣時間 02:00 AM
+  workflow_dispatch:       # 允許手動觸發
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger sync
+        run: |
+          response=$(curl -s -w "\n%{http_code}" -X POST \
+            https://hubspot-botbonnie.vercel.app/api/sync \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}")
+          body=$(echo "$response" | head -1)
+          status=$(echo "$response" | tail -1)
+          echo "Status: $status"
+          echo "Response: $body"
+          if [ "$status" != "200" ]; then
+            echo "Sync failed with status $status"
+            exit 1
+          fi
