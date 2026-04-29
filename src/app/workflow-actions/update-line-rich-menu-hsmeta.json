@@ -1,0 +1,46 @@
+{
+  "uid": "bb_update_line_rich_menu",
+  "type": "workflow-action",
+  "config": {
+    "actionUrl": "${updateLineRichMenuFunctionUrl}",
+    "supportedClients": [
+      { "client": "WORKFLOWS" }
+    ],
+    "objectTypes": ["CONTACT"],
+    "inputFields": [
+      {
+        "typeDefinition": {
+          "name": "lineUserId",
+          "type": "string",
+          "fieldType": "text"
+        },
+        "supportedValueTypes": ["OBJECT_PROPERTY"],
+        "isRequired": true
+      },
+      {
+        "typeDefinition": {
+          "name": "menuGroupId",
+          "type": "string",
+          "fieldType": "text"
+        },
+        "supportedValueTypes": ["STATIC_VALUE"],
+        "isRequired": true
+      }
+    ],
+    "labels": {
+      "en": {
+        "actionName": "Switch LINE Rich Menu",
+        "actionDescription": "Change the Rich Menu shown to a LINE contact via BotBonnie",
+        "actionCardContent": "Switch Rich Menu to: {{menuGroupId}}",
+        "inputFieldLabels": {
+          "lineUserId": "LINE User ID",
+          "menuGroupId": "Menu Group ID"
+        },
+        "inputFieldDescriptions": {
+          "lineUserId": "The contact's LINE User ID (botbonnie_line_user_id property)",
+          "menuGroupId": "BotBonnie menu group ID to display. Find it in BotBonnie › Rich Menu settings (e.g. menu-abc123)"
+        }
+      }
+    }
+  }
+}

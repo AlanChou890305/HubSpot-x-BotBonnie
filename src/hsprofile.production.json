@@ -3,6 +3,7 @@
   "variables": {
     "appName": "BotBonnie Integration",
     "sendLineModuleMessageFunctionUrl": "https://hubspot-botbonnie.vercel.app/api/send-line-module-message",
-    "sendLineSingleMessageFunctionUrl": "https://hubspot-botbonnie.vercel.app/api/send-line-text-message"
+    "sendLineSingleMessageFunctionUrl": "https://hubspot-botbonnie.vercel.app/api/send-line-text-message",
+    "updateLineRichMenuFunctionUrl": "https://hubspot-botbonnie.vercel.app/api/update-line-rich-menu"
   }
 }
