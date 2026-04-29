@@ -27,7 +27,7 @@ const handler = async (req, res) => {
   }
 
   try {
-    await axios.post(
+    const bbRes = await axios.post(
       `${BOTBONNIE_BASE_URL}/customer/actions`,
       {
         pageId: process.env.BOTBONNIE_PAGE_ID,
@@ -46,6 +46,7 @@ const handler = async (req, res) => {
         timeout: 10000
       }
     );
+    console.log('[updateLineRichMenu] BotBonnie response:', JSON.stringify(bbRes.data));
   } catch (err) {
     console.error('[updateLineRichMenu] BotBonnie error:', err.response?.data || err.message);
     return res.status(500).json({ error: 'Failed to update LINE Rich Menu' });
